@@ -12,7 +12,7 @@ With [npm](http://npmjs.org)
 $ npm install array-sorter --save
 ```
 
-## Usage
+## Example Usage
 
 ```js
 const sorter = require('array-sorter');
@@ -44,302 +44,131 @@ console.log(array);
 
 ## API
 
-## Cache - cache-memory object
-
-Object is used to create cacher instances, default configuration variables and scheduled object cleanup.
-
 ## create
 
-```js
-let cacher = require('cache-memory')
-    .create([options]);
-```
-
-Creates a new cacher instance.
-
-### options
- - `clone`: (default: `true`) Defines whether objects should be cloned when set in and retrieved from cache.
- - `id`: The id of the cacher (string value).
- - `storeUndefinedObjects`: (default: false) Defines whether undefined objects should be stored in memory.
- - `ttl`: (default: `0`) Defines in seconds how long an object should be stored in memory.
-   `0` = Forever
- - `hit`: Function called §every time an object is retrieved from cache.
- - `miss`: Function called every time an object is not from cache.
- - `added`: Function called every time an object is added to cache.
- - `removed`: Function called every time an object is removed from cache.
- - `count`: Function called every time an object is added or removed from cache.
-
-** hit, miss, added, removed functions are all called with the following object structure.
+When creating a sorter object you initialise it with the array to sort.
 
 ```js
-{
-  id: 'some-id',
-  key: 'some-key'
-}
+const array = [];
+const sorter(array);
 ```
 
-** count function is called with the following object structure.
+You can also provide additional optional `locale` and `options` arguments for string comparisons `localCompare`. 
 
 ```js
-{
-  id: 'some-id',
-  count: 123
-}
+const array = [];
+const sorter(array, 'en', { caseFirst: 'lower' });
 ```
 
-## clone
+When initially creating the sorter 3 functions will be exposed by it:
+
+- orderBy
+- orderByDescending
+- sort
+
+## orderBy
+
+Will add an instruction to order objects in ascending order using the given property filter
 
 ```js
-require('cache-memory')
-    .clone(false);
+sorter.orderBy(x => x.firstName);
 ```
 
-Turns off object cloning (default `true`).
-
-## storeUndefinedObjects
+A custom comparison function can also be provided
 
 ```js
-require('cache-memory')
-    .storeUndefinedItems(true);
+sorter.orderBy(x => x.firstName, (a, b) => { return a - b; });
 ```
 
-Allows undefined objects to be stored in cache (default `false`).
+This function will expose the following 3 functions:
 
-## cleanup
+- thenBy
+- thenByDescending
+- sort
+
+## orderByDescending
+
+Will add an instruction to order objects in descending order using the given property filter
 
 ```js
-require('cache-memory')
-    .cleanup(60);
+sorter.orderByDescending(x => x.firstName);
 ```
 
-Forces expired objects to be removed from cache every `60` seconds.  By default `no cleanup` is performed.
-
-## clear
+A custom comparison function can also be provided
 
 ```js
-require('cache-memory')
-  .clear();
+sorter.orderByDescending(x => x.firstName, (a, b) => { return a - b; });
 ```
 
-Clears the in memory cache of all active cache instances.
+This function will expose the following 3 functions:
 
-## cachers
+- thenBy
+- thenByDescending
+- sort
+
+## thenBy
+
+Will add an additional instruction to sort in ascending order using the given property filter
 
 ```js
-let cachers = require('cache-memory').cachers();
+sorter
+  .orderBy(x => x.firstName)
+  .thenBy(x => x.surname);
 ```
 
-Gets all active cache instances.
-
-## cacher
+A custom comparison function can also be provided
 
 ```js
-let cacher = require('cache-memory').cacher('snacks');
+sorter
+  .orderBy(x => x.firstName)
+  .thenBy(x => x.surname, (a, b) => { return a - b; });
 ```
 
-Gets an active cacher by it's id.
+This function will expose the following 3 functions:
 
-## stats
+- thenBy
+- thenByDescending
+- sort
+
+## thenByDescending
+
+Will add an additional instruction to sort in descending order using the given property filter
 
 ```js
-let stats = require('cache-memory').stats();
+sorter
+  .orderBy(x => x.firstName)
+  .thenByDescending(x => x.surname);
 ```
 
-Gets an array of stats across all active cachers.
+A custom comparison function can also be provided
 
 ```js
-[
-  {
-    id: '1',
-    stats: {
-      count: 5,
-      hits: 17123,
-      misses: 57,
-      hitRate: 0.9966821885913854
-    }
-  }
-]
+sorter
+  .orderBy(x => x.firstName)
+  .thenByDescending(x => x.surname, (a, b) => { return a - b; });
 ```
 
-## dispose
+This function will expose the following 3 functions:
+
+- thenBy
+- thenByDescending
+- sort
+
+## sort
+
+Executing the function will sort the array based on the given instructions.
 
 ```js
-require('cache-memory').dispose();
-```
-
-Clears all in memory cacher instances and also clears the cleanup task if defined using the `cleanup` function.
-
-
-## Cache - created cache-memory instance
-
-It's functions are defined below.
-
-## get
-
-```js
-let obj = cache.get(key, [options]);
-```
-
-Gets an object from cache, undefined will be returned if object does not exist.
-
-### options
- - `clone`: (default: `true`) Defines whether objects should be cloned when set in and retrieved from cache.
- - `id`: The id of the cacher (string value).
- - `storeUndefinedObjects`: (default: `false`) Defines whether undefined objects should be stored in memory.
- - `ttl`: (default: `0`) Defines in seconds how long an object should be stored in memory.
-   `0` = Forever
- - `hit`: Function called every time an object is retrieved from cache.
- - `miss`: Function called every time an object is not from cache.
- - `added`: Function called every time an object is added to cache.
- - `removed`: Function called every time an object is removed from cache.
- - `count`: Function called every time an object is added or removed from cache.
-
-** hit, miss, added, removed functions are all called with the following object structure.
-
-```js
-{
-  id: 'some-id',
-  key: 'some-key'
-}
-```
-
-** count function is called with the following object structure.
-
-```js
-{
-  id: 'some-id',
-  count: 123
-}
-```
-
-## getExpiry
-
-```js
-let expiry = cache.getExpiry(key);
-```
-
-Gets the expiry DateTime of an object in cache, undefined is returned if object is not found.
-
-## set
-
-```js
-cache.set(key, value, [options]);
-```
-
-Stores an object in cache.
-
-## options
- - `storeUndefinedObjects`: (default: global or instance level definition) Defines whether undefined objects should be stored in memory.
- - `ttl`: (default: global or instance level definition) Defines in seconds how long an object should be stored in memory.
-   `0` = Forever
-
-If 'storeUndefinedObjects' is false. undefined, null and objects with an IsNull function that returns true will not be stored.
-
-## getAndSet v2.*
-
-Version 2.* of the modules getAndSet function is an `async` function
-
-### async getAndSet
-
-```js
-async function getter() {
-  return 'hello-world-' + Math.random(0, 100);
-}
-
-await cache.getAndSet(key, getter, [options]);
-```
-
-Gets and sets an object in cache.  The getAndSet function is a `generator` function so should be yielded or Promisified etc.
-
-### options
- - `storeUndefinedObjects`: (default: global or instance level definition) Defines whether undefined objects should be stored in memory.
- - `ttl`: (default: global or instance level definition) Defines in seconds how long an object should be stored in memory.
-   `0` = Forever
-
-## getAndSet v1.*
-
-Version 1.* of the modules getAndSet function is a `generator` function
-
-### * getAndSet
-
-```js
-yield* cache.getAndSet(key, [options]);
-```
-
-Gets and sets an object in cache.  The getAndSet function is a `generator` function so should be yielded or Promisified etc.
-
-### options
- - `generator`: A generator function that will be yielded to return the object value to store in cache.
- - `storeUndefinedObjects`: (default: global or instance level definition) Defines whether undefined objects should be stored in memory.
- - `ttl`: (default: global or instance level definition) Defines in seconds how long an object should be stored in memory.
-   `0` = Forever
-
-## clear
-
-```js
-cache.clear();
-```
-
-Removes all objects from the cache instance.
-
-## remove
-
-```js
-cache.remove(key);
-```
-
-Remove the object from cache.
-
-## stats
-
-```js
-let stats = cache.stats();
-```
-
-Gets the stats for the cache instance.
-
-Example return value:
-
-```js
-{
-  count: 5,
-  hits: 17123,
-  misses: 57,
-  hitRate: 0.9966821885913854
-}
-```
-
-## keys
-
-```js
-let keys = cache.keys();
-```
-
-Gets all keys for objects stored in the cache instance.
-
-## options
-
-```js
-let options = cache.options();
-```
-
-Gets all configured options for a cache instance.
-
-Example return value:
-
-```js
-{
-  ttl: 60,
-  clone: true,
-  storeUndefinedObjects: false
-}
-```
+sorter
+  .orderBy(x => x.firstName)
+  .sort();
+```  
 
 ## License
 
 (MIT)
 
-Copyright (c) 2017 Lee Crowe
+Copyright (c) 2018 Lee Crowe
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
