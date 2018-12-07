@@ -1,0 +1,53 @@
+{
+  "name": "array-sorter",
+  "version": "0.0.1",
+  "description": "Sort an array of objects by one or more properties in any order. Multiple properties and custom comparison functions can be used.",
+  "main": "./lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/croweman/array-sorter.git"
+  },
+  "contributors": [
+    {
+      "name": "Lee Crowe",
+      "email": "leecrowe81@googlemail.co.uk"
+    }
+  ],
+  "scripts": {
+    "test": "istanbul test ./node_modules/mocha/bin/_mocha -- specs -R spec --recursive",
+    "cover": "istanbul cover ./node_modules/mocha/bin/_mocha -- specs -R spec --recursive"
+  },
+  "author": "Lee Crowe a.k.a croweman",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "~4.2.0",
+    "istanbul": "~0.4.5",
+    "mocha": "~5.2.0"
+  },
+  "engines": {
+    "node": ">=8.9.0"
+  },
+  "keywords": [
+    "arr",
+    "array",
+    "asc",
+    "ascend",
+    "ascending",
+    "desc",
+    "descend",
+    "descending",
+    "multiple",
+    "nested",
+    "order",
+    "ordered",
+    "orderby",
+    "orderbydescending",
+    "path",
+    "sort",
+    "sorted",
+    "sorting",
+    "thenby",
+    "thenbydescending"
+  ]
+}
