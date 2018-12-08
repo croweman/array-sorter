@@ -9,7 +9,7 @@ Node module for sorting an array of objects by one or more properties in any ord
 With [npm](http://npmjs.org)
 
 ```bash
-$ npm install array-sorter --save
+$ npm i array-sorter
 ```
 
 ## Example Usage
