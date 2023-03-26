@@ -1,6 +1,6 @@
 {
   "name": "array-sorter",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "description": "Sort an array of objects by one or more properties in any order. Multiple properties and custom comparison functions can be used.",
   "main": "./lib/index.js",
   "repository": {
@@ -19,11 +19,10 @@
   },
   "author": "Lee Crowe a.k.a croweman",
   "license": "MIT",
-  "dependencies": {},
   "devDependencies": {
     "chai": "~4.2.0",
     "istanbul": "~0.4.5",
-    "mocha": "~5.2.0"
+    "mocha": "~10.2.0"
   },
   "engines": {
     "node": ">=8.9.0"

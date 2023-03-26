@@ -46,8 +46,95 @@ const getTestData = () => {
   ];
 };
 
+const getComplexNestedTestData = () => {
+  return [
+    {
+      people: [
+        {
+          details: {
+            firstName: 'a',
+            surname: 'd',
+            price: 0
+          }
+        }
+      ]
+    },
+    {
+      people: [
+        {
+          details: {
+            firstName: 'a',
+            surname: 'c',
+            price: 0
+          }
+        }
+      ]
+    },
+    {
+      people: [{
+        details: {
+          firstName: 'a',
+          surname: 'a',
+          price: 0
+        }
+      }
+      ]
+    },
+    {
+      people: [{
+        details: {
+          firstName: 'b',
+          surname: 'd',
+          price: 20,
+        }
+      }
+      ]
+    },
+    {
+      people: [{
+        details: {
+          firstName: 'b',
+          surname: 'd',
+          price: 10,
+        }
+      }
+      ]
+    },
+    {
+      people: [{
+        details: {
+          firstName: 'b',
+          surname: 'd',
+          price: 30,
+        }
+      }
+      ]
+    },
+    {
+      people: [{
+        details: {
+          firstName: 'b',
+          surname: 'a',
+          price: 0
+        }
+      }]
+    },
+    {
+      people: [{
+        details: {
+          firstName: 'a',
+          surname: 'b',
+          price: 0
+        }
+      }
+      ]
+    }
+  ];
+};
+
 describe('array-sorter', () => {
   let originalTestData = getTestData();
+  let originalComplexNestedTestData = getComplexNestedTestData();
 
   describe('single-propety: correctly sorts', () => {
     it('by firstName ascending', () => {
@@ -112,6 +199,73 @@ describe('array-sorter', () => {
         originalTestData[4],
         originalTestData[3],
         originalTestData[5]
+      ]);
+    });
+  });
+
+  describe('single-propety: correctly sorts when using string value retriever', () => {
+    it('by firstName ascending', () => {
+      const testData = originalComplexNestedTestData.slice();
+
+      sorter(testData)
+          .orderBy('people[0].details.firstName')
+          .sort();
+
+      expect(testData.length).to.eql(8);
+
+      expect(testData).to.eql([
+        originalComplexNestedTestData[0],
+        originalComplexNestedTestData[1],
+        originalComplexNestedTestData[2],
+        originalComplexNestedTestData[7],
+        originalComplexNestedTestData[3],
+        originalComplexNestedTestData[4],
+        originalComplexNestedTestData[5],
+        originalComplexNestedTestData[6]
+      ]);
+    });
+
+    it('by firstName descending', () => {
+      const testData = originalComplexNestedTestData.slice();
+
+      sorter(testData)
+          .orderByDescending('people[0].details.firstName')
+          .sort();
+
+      expect(testData.length).to.eql(8);
+
+      expect(testData).to.eql([
+        originalComplexNestedTestData[3],
+        originalComplexNestedTestData[4],
+        originalComplexNestedTestData[5],
+        originalComplexNestedTestData[6],
+        originalComplexNestedTestData[0],
+        originalComplexNestedTestData[1],
+        originalComplexNestedTestData[2],
+        originalComplexNestedTestData[7]
+      ]);
+    });
+
+    it('by price ascending when using custom comparer', () => {
+      const testData = originalComplexNestedTestData.slice();
+
+      const comparer = (valA, valB) => valA - valB;
+
+      sorter(testData)
+          .orderBy('people[0].details.price', comparer)
+          .sort();
+
+      expect(testData.length).to.eql(8);
+
+      expect(testData).to.eql([
+        originalComplexNestedTestData[0],
+        originalComplexNestedTestData[1],
+        originalComplexNestedTestData[2],
+        originalComplexNestedTestData[6],
+        originalComplexNestedTestData[7],
+        originalComplexNestedTestData[4],
+        originalComplexNestedTestData[3],
+        originalComplexNestedTestData[5]
       ]);
     });
   });
@@ -293,6 +447,3 @@ describe('array-sorter', () => {
     });
   });
 });
-
-// test with compare options
-// handle nulls, nans, undefined?

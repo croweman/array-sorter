@@ -32,6 +32,13 @@ sorter(array)
 
 console.log(array);
 
+// All functions can retrieve using a string path rather than a function
+sort(array)
+    .orderBy('firstName')
+    .thenBy('surname')
+    .thenByDescending('age')
+    .sort();
+
 /* output would be:
   [
     { "firstName": "adam", "surname": "aardvark", "age": 35 },
@@ -40,6 +47,11 @@ console.log(array);
     { "firstName": "bob", "surname": "smith", "age": 30 }
   ]
 */
+
+// more complex value retrieval can also be used e.g.
+.orderBy(x => x.people[0].details.firstName)
+// or
+.orderBy('people[0].details.firstName')
 ```
 
 ## API
